@@ -6,7 +6,7 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 20:48:24 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/12 16:20:39 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/16 17:27:54 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,13 @@ typedef struct s_images
 
 
 void	*ft_memset(void *bytes, int value, size_t len);
+void	free_string(char **target);
 
 char	*ft_strnjoin(char **s1, char const *s2, size_t len);
 char	*get_next_line(int fd);
 
 int		check_line(char *map, t_flags *flags);
-int		check_components(int flag, int len);
+int	check_components(char *map, t_flags flag);
 int		check_flag(char flag, char target);
 int		open_and_draw(char *map, t_flags flag);
 void	find_route(char *map, int current, int *collectable, int width);

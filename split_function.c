@@ -2,13 +2,15 @@
 
 int	check_flag(char flag, char target)
 {
-	if (flag & target == 0)
-		return (0);
-	else
+	if ((flag & target) == 0)
+	{
 		return (-1);
+	}
+	else
+		return (0);
 }
 
-void	free_all(void **target)
+void	free_string(char **target)
 {
 	if (*target != NULL)
 		free(*target);
