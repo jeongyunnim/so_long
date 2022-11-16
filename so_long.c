@@ -6,7 +6,7 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 19:09:59 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/16 17:28:16 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/16 22:41:24 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,95 +31,95 @@ int	check_map(int fd)
 		map_line = get_next_line(fd);
 		if (map_line == NULL)
 			flags.flag |= END_FLAG;
-		else
+		else if (check_line(map_line, &flags) != ERROR)
 		{
 			map = ft_strnjoin(&map, map_line, flags.line_len);
 			if (map == NULL)
 				return (ERROR);
+			flags.map_height++;
 		}
-		if (check_line(map_line, &flags) == ERROR)
+		else
 			return (ERROR);
 		free_string(&map_line);
-		flags.map_height++;
 	}
+	printf("map: %s\n", map);
 	if (check_components(map, flags) == ERROR)
 		return (ERROR);
+	printf("map: %s\n", map);
 	find_route(map, flags.p, &flags.coll_cnt, flags.line_len);
+	printf("find_map: %s\n", map);
+	
 	if (flags.coll_cnt != 0)
 	{
+		write(1, "ROUTE ERROR\n",12);
 		write(1, "IT CAN'T BE SOLVED\n", 19);
 		return (ERROR);
 	}
 	else
 	{
 		write(1, "YOU CAN SOLVE! TRY! TRY!\n", 24);
-		//if (open_and_draw(map, flags) == ERROR)
-		//	return (ERROR);
+		if (open_and_draw(map, flags) == ERROR)
+			return (ERROR);
 	}
 	return (0);
 }
 
-//t_imginfo	call_img(void *mlx_ptr, char *file)
-//{
-//	t_imginfo	img;
+t_images	pack_img(void *mlx_ptr)
+{
+	t_images	imgs;
+	int			width;
+	int			height;
 
-//	img.img_ptr = (mlx_ptr, file, &img.width, &img.height);
-//	return (img);
-//}
+	memset(&imgs, 0, sizeof(imgs));
+	imgs.tile = mlx_xpm_file_to_image(mlx_ptr, "./source/tile.xpm", &width, &height);
+	imgs.wall = mlx_xpm_file_to_image(mlx_ptr, "./source/wall.xpm", &width, &height);
+	imgs.coll = mlx_xpm_file_to_image(mlx_ptr, "./source/coll.xpm", &width, &height);
+	imgs.hero = mlx_xpm_file_to_image(mlx_ptr, "./source/hero.xpm", &width, &height);
+	imgs.exit = mlx_xpm_file_to_image(mlx_ptr, "./source/tile.xpm", &width, &height); // 왜 포인터만을 사용해야 하는지..??
+	return (imgs);
+}
 
-//t_images	pack_img(void *mlx_ptr)
-//{
-//	t_images	imgs;
+void	initialize_map(void *mlx_ptr, void *win_ptr, void *tile, t_flags flag)
+{
+	int		i;
+	int		j;
 
-//	*imgs.tile = call_img(mlx_ptr, "./source/tile.xpm");
-//	*imgs.wall = call_img(mlx_ptr, "./source/tile.xpm");
-//	*imgs.coll = call_img(mlx_ptr, "./source/tile.xpm");
-//	*imgs.hero = call_img(mlx_ptr, "./source/tile.xpm");
-//	*imgs.exit = call_img(mlx_ptr, "./source/tile.xpm"); // 왜 포인터만을 사용해야 하는지..??
-//	return (imgs);
-//}
+	i = -1;
+	while (++i < flag.map_height)
+	{
+		j = -1;
+		while (++j < flag.line_len)
+			mlx_put_image_to_window(mlx_ptr, win_ptr, tile, 64 * j, 64 * i);
+	}
+}
 
-//void	initialize_map(void *mlx_ptr, void *win_ptr, t_imginfo tile, t_flags flag)
-//{
-//	int		i;
-//	int		j;
+int	open_and_draw(char *map, t_flags flag)
+{
+	t_images	images;
+	void		*mlx_ptr;
+	void		*win_ptr;
+	int			i;
 
-//	i = -1;
-//	while (++i < flag.map_height)
-//	{
-//		j = -1;
-//		while (++j < flag.line_len)
-//			mlx_put_image_to_window(mlx_ptr, win_ptr, tile.img_ptr, tile.width * j, tile.height * i);
-//	}
-//}
-
-//int	open_and_draw(char *map, t_flags flag)
-//{
-//	t_images	images;
-//	void		*mlx_ptr;
-//	void		*win_ptr;
-//	int			i;
-
-//	i = -1;
-//	mlx_ptr = mlx_init();
-//	win_ptr = mlx_new_window(mlx_ptr, flag.line_len * 32, (flag.map_height - 1) * 32, "test"); // 왜 -1 해주는지?
-//	images = pack_img(mlx_ptr);
-//	initialize_map(mlx_ptr, win_ptr, *images.tile, flag);
-//	printf("%s\n", map);
-//	while (map[++i] != '\0')
-//	{
-//		if (map[i] == '1')
-//			mlx_put_image_to_window(mlx_ptr, win_ptr, images.wall->img_ptr, (i % flag.line_len) * 32, (i / flag.line_len) * 32);
-//		else if (map[i] == 'C')
-//			mlx_put_image_to_window(mlx_ptr, win_ptr, images.coll->img_ptr, (i % flag.line_len) * 32, (i / flag.line_len) * 32);
-//		else if (map[i] == 'P')
-//			mlx_put_image_to_window(mlx_ptr, win_ptr, images.hero->img_ptr, (i % flag.line_len) * 32, (i / flag.line_len) * 32);
-//		else if (map[i] == 'E')
-//			mlx_put_image_to_window(mlx_ptr, win_ptr, images.exit->img_ptr, (i % flag.line_len) * 32, (i / flag.line_len) * 32);
-//	}
-//	mlx_loop(mlx_ptr);
-//	return (0);
-//}
+	i = -1;
+	mlx_ptr = mlx_init();
+	win_ptr = mlx_new_window(mlx_ptr, flag.line_len * 64, flag.map_height * 64, "test"); // 왜 -1 해주는지?
+	images = pack_img(mlx_ptr);
+	initialize_map(mlx_ptr, win_ptr, images.tile, flag);
+	printf("%s\n", map);
+	while (map[++i] != '\0')
+	{
+		if (map[i] == '1')
+			mlx_put_image_to_window(mlx_ptr, win_ptr, images.wall, (i % flag.line_len) * 64, (i / flag.line_len) * 64);
+		else if (map[i] == 'C')
+			mlx_put_image_to_window(mlx_ptr, win_ptr, images.coll, (i % flag.line_len) * 64, (i / flag.line_len) * 64);
+		else if (map[i] == 'P')
+			mlx_put_image_to_window(mlx_ptr, win_ptr, images.hero, (i % flag.line_len) * 64, (i / flag.line_len) * 64);
+		else if (map[i] == 'E')
+			mlx_put_image_to_window(mlx_ptr, win_ptr, images.exit, (i % flag.line_len) * 64, (i / flag.line_len) * 64);
+	}
+	mlx_loop(mlx_ptr);
+	return (0);
+}
 
 int	main(int argc, char **argv)
 {

@@ -6,7 +6,7 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 20:49:09 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/11 19:37:16 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/16 19:36:14 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ size_t	ft_strlcpy(char *dest, const char *src, size_t dest_size)
 	size_t	i;
 
 	i = 0;
-	while (i + 1 < dest_size)
+	while (dest && i + 1 < dest_size)
 	{
 		dest[i] = src[i];
 		i++;
@@ -46,11 +46,12 @@ char	*ft_strnjoin(char **s1, char const *s2, size_t len)
 	size_t	s1_len;
 	char	*res;
 
+	res = NULL;
 	s1_len = 0;
 	while (*s1 && (*s1)[s1_len])
 		s1_len++;
 	res = (char *)malloc((s1_len + len + 1) * sizeof(char));
-	if (res == 0)
+	if (res == NULL)
 	{
 		if (*s1)
 			free(*s1);

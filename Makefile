@@ -6,7 +6,7 @@
 #    By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/04 15:08:56 by jeseo             #+#    #+#              #
-#    Updated: 2022/11/16 16:34:00 by jeseo            ###   ########.fr        #
+#    Updated: 2022/11/16 20:27:48 by jeseo            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ RM		=	rm -f
 all		:	$(NAME)
 
 $(NAME)	:	$(OBJ)
-	$(CC) $(CFLAGS) $^ -I $(INC) -o $@
+	$(CC) $(CFLAGS) $(MLX_FLAGS) $^ -I $(INC) -o $@
 
 $(OBJ)	:	$(SRC)
 	$(CC) $(CFLAGS) -c $^ -I $(INC)

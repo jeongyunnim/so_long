@@ -6,7 +6,7 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 20:48:24 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/16 17:27:54 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/16 21:00:39 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,23 +36,19 @@ typedef struct s_flagss
 	int		coll_cnt;
 	int		p;
 	char	flag;
-}				t_flags;
-typedef struct s_imginfo
-{
-	void	*img_ptr;
-	int		width;
-	int		height;
-}				t_imginfo;
+}	t_flags;
+
 
 typedef struct s_images
 {
-	t_imginfo *tile;
-	t_imginfo *wall;
-	t_imginfo *coll;
-	t_imginfo *hero;
-	t_imginfo *exit;
-}				t_images;
+	void	*tile;
+	void	*wall;
+	void	*coll;
+	void	*hero;
+	void	*exit;
+}	t_images;
 
+t_images	pack_img(void *mlx_ptr);
 
 void	*ft_memset(void *bytes, int value, size_t len);
 void	free_string(char **target);
