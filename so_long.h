@@ -6,7 +6,7 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 20:48:24 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/16 21:00:39 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/17 17:27:53 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,12 @@ typedef struct s_flagss
 	char	flag;
 }	t_flags;
 
+typedef struct s_map
+{
+	char	*map_line;
+	char	*map;
+	char	*map_check;
+}	t_map;
 
 typedef struct s_images
 {

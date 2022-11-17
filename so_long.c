@@ -6,7 +6,7 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 19:09:59 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/16 22:41:24 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/17 17:24:07 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 // 	mlx_destroy_window(mlx_ptr, win_ptr);
 // }
 
-int	check_map(int fd)
+int	check_map(int fd) // free 잘 해줬는지 체크
 {
 	t_flags	flags;
 	char	*map_line;
@@ -45,10 +45,8 @@ int	check_map(int fd)
 	printf("map: %s\n", map);
 	if (check_components(map, flags) == ERROR)
 		return (ERROR);
-	printf("map: %s\n", map);
 	find_route(map, flags.p, &flags.coll_cnt, flags.line_len);
 	printf("find_map: %s\n", map);
-	
 	if (flags.coll_cnt != 0)
 	{
 		write(1, "ROUTE ERROR\n",12);
