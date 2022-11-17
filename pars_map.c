@@ -6,7 +6,7 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 15:13:10 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/16 22:49:58 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/17 20:27:08 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,6 @@ int	check_components(char *map, t_flags flag)
 void	find_route(char *map, int current, int *collectable, int width)
 {
 	static int	coll_flag;
-	char		**map_temp;
-
-	map_temp = &map;
 	// int	i;
 
 	// i = 0;
@@ -118,26 +115,26 @@ void	find_route(char *map, int current, int *collectable, int width)
 	//		printf("\n");
 	//	i++;
 	//}
-	if (*map_temp[current] == 'P')
+	if (map[current] == 'P')
 	{
 		printf("P: %d\n", current);
 		printf("coll_flag: %d, collectable: %d\n", coll_flag, *collectable);
 		coll_flag = *collectable + 1;
 	}
-	else if (*map_temp[current] == 'C' || *map_temp[current] == 'E')
+	else if (map[current] == 'C' || map[current] == 'E')
 		coll_flag--;
 	if (coll_flag == 0) // escape까지 포함하기 때문에 -1.
 	{
 		*collectable = 0;
 		return ;
 	}
-	else if (*map_temp[current] != '@' && *map_temp[current] != '1' && coll_flag != 0)
+	else if (map[current] != '@' && map[current] != '1' && coll_flag != 0)
 	{
-		*map_temp[current] = '@';
-		find_route(*map_temp, current + width, collectable, width);
-		find_route(*map_temp, current + 1, collectable, width);
-		find_route(*map_temp, current - width, collectable, width);
-		find_route(*map_temp, current - 1, collectable, width);
+		map[current] = '@';
+		find_route(map, current + width, collectable, width);
+		find_route(map, current + 1, collectable, width);
+		find_route(map, current - width, collectable, width);
+		find_route(map, current - 1, collectable, width);
 		//map[current] = '0';
 	}
 }

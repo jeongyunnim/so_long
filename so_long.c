@@ -6,7 +6,7 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 19:09:59 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/17 17:24:07 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/17 20:26:31 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,11 @@ int	check_map(int fd) // free 잘 해줬는지 체크
 	printf("map: %s\n", map);
 	if (check_components(map, flags) == ERROR)
 		return (ERROR);
-	find_route(map, flags.p, &flags.coll_cnt, flags.line_len);
+	map_line = strdup(map);
+	if (map_line == NULL)
+		return (ERROR);
+	find_route(map_line, flags.p, &flags.coll_cnt, flags.line_len);
+	free_string(&map_line);
 	printf("find_map: %s\n", map);
 	if (flags.coll_cnt != 0)
 	{
