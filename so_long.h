@@ -6,7 +6,7 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 20:48:24 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/17 17:27:53 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/18 21:10:37 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,46 +29,62 @@
 # define EXIT_FLAG	0x08 // 0000 1000
 # define END_FLAG	0x10 // 0001 0000
 
-typedef struct s_flagss
-{
-	int		map_height;
-	int		line_len;
-	int		coll_cnt;
-	int		p;
-	char	flag;
-}	t_flags;
-
-typedef struct s_map
-{
-	char	*map_line;
-	char	*map;
-	char	*map_check;
-}	t_map;
+/*key code*/
+# define W		13
+# define S		1
+# define A		0
+# define D		2
+# define ESC	53
 
 typedef struct s_images
 {
+	void	*motion1;
+	void	*motion2;
+	void	*motion3;
+	void	*motion4;
+	void	*motion5;
 	void	*tile;
 	void	*wall;
 	void	*coll;
-	void	*hero;
 	void	*exit;
 }	t_images;
 
-t_images	pack_img(void *mlx_ptr);
+typedef struct s_settings
+{
+	t_images	*imgs;
+	void		*mlx;
+	void		*win;
+	char		*map;
+	char		*check_map;
+	int			map_height;
+	int			line_len;
+	int			coll_cnt;
+	int			p;
+	char		flag;
+}	t_set;
 
+
+
+
+size_t	ft_strlcpy(char *dest, const char *src, size_t dest_size);
 void	*ft_memset(void *bytes, int value, size_t len);
 void	free_string(char **target);
-
 char	*ft_strnjoin(char **s1, char const *s2, size_t len);
 char	*get_next_line(int fd);
 
-int		check_line(char *map, t_flags *flags);
-int	check_components(char *map, t_flags flag);
-int		check_flag(char flag, char target);
-int		open_and_draw(char *map, t_flags flag);
+void	draw_map(t_set flag, t_images img);
 void	find_route(char *map, int current, int *collectable, int width);
+int		check_line(t_set *set);
+int		check_components(t_set *flag);
+int		check_flag(char flag, char target);
 
-size_t	ft_strlcpy(char *dest, const char *src, size_t dest_size);
+int			initialize_set(t_set *set, t_images *img);
+t_images	set_img(void *mlx_ptr);
 
+void	pressed_s(t_set *flag);
+void	pressed_d(t_set *flag);
+void	pressed_w(t_set *flag);
+void	pressed_a(t_set *flag);
+void	pressed_esc(void);
 
 #endif

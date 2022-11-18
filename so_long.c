@@ -6,126 +6,146 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 19:09:59 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/17 20:26:31 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/18 21:34:59 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-// void	esc_event(void *mlx_ptr, void *win_ptr)
-// {
-// 	mlx_destroy_window(mlx_ptr, win_ptr);
-// }
-
-int	check_map(int fd) // free 잘 해줬는지 체크
+int	check_map(int fd, t_set *set) // free 잘 해줬는지 체크
 {
-	t_flags	flags;
-	char	*map_line;
-	char	*map;
-
-	memset(&flags, 0, sizeof(flags));
-	map = NULL;
-	map_line = NULL;
-	while (check_flag(END_FLAG, flags.flag) == -1)
+	while (check_flag(END_FLAG, set->flag) == -1)
 	{
-		map_line = get_next_line(fd);
-		if (map_line == NULL)
-			flags.flag |= END_FLAG;
-		else if (check_line(map_line, &flags) != ERROR)
+		set->check_map = get_next_line(fd);
+		if (set->check_map == NULL)
+			set->flag |= END_FLAG;
+		else if (check_line(set) != ERROR)
 		{
-			map = ft_strnjoin(&map, map_line, flags.line_len);
-			if (map == NULL)
+			set->map = ft_strnjoin(&set->map, set->check_map, set->line_len);
+			if (set->map == NULL)
 				return (ERROR);
-			flags.map_height++;
+			set->map_height++;
 		}
 		else
 			return (ERROR);
-		free_string(&map_line);
+		free_string(&set->check_map);
 	}
-	printf("map: %s\n", map);
-	if (check_components(map, flags) == ERROR)
+	if (check_components(set) == ERROR)
 		return (ERROR);
-	map_line = strdup(map);
-	if (map_line == NULL)
+	set->check_map = strdup(set->map);
+	if (set->check_map == NULL)
 		return (ERROR);
-	find_route(map_line, flags.p, &flags.coll_cnt, flags.line_len);
-	free_string(&map_line);
-	printf("find_map: %s\n", map);
-	if (flags.coll_cnt != 0)
+	find_route(set->check_map, set->p, &set->coll_cnt, set->line_len);
+	free_string(&set->check_map);
+	printf("find_map: %s\n", set->map);
+	if (set->coll_cnt != 0)
 	{
 		write(1, "ROUTE ERROR\n",12);
 		write(1, "IT CAN'T BE SOLVED\n", 19);
 		return (ERROR);
 	}
-	else
-	{
-		write(1, "YOU CAN SOLVE! TRY! TRY!\n", 24);
-		if (open_and_draw(map, flags) == ERROR)
-			return (ERROR);
-	}
+	write(1, "YOU CAN SOLVE! TRY! TRY!\n", 24);
 	return (0);
 }
 
-t_images	pack_img(void *mlx_ptr)
+t_images	set_img(void *mlx_ptr)
 {
 	t_images	imgs;
 	int			width;
 	int			height;
 
 	memset(&imgs, 0, sizeof(imgs));
+	imgs.motion1 = mlx_xpm_file_to_image(mlx_ptr, "./source/hero1.xpm", &width, &height);
+	imgs.motion2 = mlx_xpm_file_to_image(mlx_ptr, "./source/hero2.xpm", &width, &height);
+	imgs.motion3 = mlx_xpm_file_to_image(mlx_ptr, "./source/hero3.xpm", &width, &height);
+	imgs.motion4 = mlx_xpm_file_to_image(mlx_ptr, "./source/hero4.xpm", &width, &height);
+	imgs.motion5 = mlx_xpm_file_to_image(mlx_ptr, "./source/hero5.xpm", &width, &height);
 	imgs.tile = mlx_xpm_file_to_image(mlx_ptr, "./source/tile.xpm", &width, &height);
 	imgs.wall = mlx_xpm_file_to_image(mlx_ptr, "./source/wall.xpm", &width, &height);
 	imgs.coll = mlx_xpm_file_to_image(mlx_ptr, "./source/coll.xpm", &width, &height);
-	imgs.hero = mlx_xpm_file_to_image(mlx_ptr, "./source/hero.xpm", &width, &height);
-	imgs.exit = mlx_xpm_file_to_image(mlx_ptr, "./source/tile.xpm", &width, &height); // 왜 포인터만을 사용해야 하는지..??
+	imgs.exit = mlx_xpm_file_to_image(mlx_ptr, "./source/tile.xpm", &width, &height);
 	return (imgs);
 }
 
-void	initialize_map(void *mlx_ptr, void *win_ptr, void *tile, t_flags flag)
+void	draw_tile(t_set set, void *tile)
 {
 	int		i;
 	int		j;
 
 	i = -1;
-	while (++i < flag.map_height)
+	while (++i < set.map_height)
 	{
 		j = -1;
-		while (++j < flag.line_len)
-			mlx_put_image_to_window(mlx_ptr, win_ptr, tile, 64 * j, 64 * i);
+		while (++j < set.line_len)
+			mlx_put_image_to_window(set.mlx, set.win, tile, 64 * j, 64 * i);
 	}
 }
 
-int	open_and_draw(char *map, t_flags flag)
+int key_handler(int key_code, t_set *flag)
 {
-	t_images	images;
-	void		*mlx_ptr;
-	void		*win_ptr;
+	if (key_code == S)
+	{
+		printf("S: %d\n", key_code);
+		pressed_s(flag);
+	}
+	if (key_code == D)
+	{
+		printf("D: %d\n", key_code);
+		pressed_d(flag);
+	}
+	if (key_code == W)
+	{
+		printf("W: %d\n", key_code);
+		pressed_w(flag);
+	}
+	if (key_code == A)
+	{
+		printf("A: %d\n", key_code);
+		pressed_a(flag);
+	}
+	if (key_code == ESC)
+	{
+		printf("ESC: %d\n", key_code);
+		pressed_esc();
+	}
+	return (0);
+}
+
+int	initialize_set(t_set *set, t_images *img)
+{
+	set->mlx = mlx_init();
+	set->win = mlx_new_window(set->mlx, set->line_len * 64, set->map_height * 64, "so_long");
+	*img = set_img(set->mlx);
+	set->imgs = img;
+	draw_tile(*set, img->tile);
+	return (0);
+}
+
+void	draw_map(t_set set, t_images img)
+{
 	int			i;
 
 	i = -1;
-	mlx_ptr = mlx_init();
-	win_ptr = mlx_new_window(mlx_ptr, flag.line_len * 64, flag.map_height * 64, "test"); // 왜 -1 해주는지?
-	images = pack_img(mlx_ptr);
-	initialize_map(mlx_ptr, win_ptr, images.tile, flag);
-	printf("%s\n", map);
-	while (map[++i] != '\0')
+	while (set.map[++i] != '\0')
 	{
-		if (map[i] == '1')
-			mlx_put_image_to_window(mlx_ptr, win_ptr, images.wall, (i % flag.line_len) * 64, (i / flag.line_len) * 64);
-		else if (map[i] == 'C')
-			mlx_put_image_to_window(mlx_ptr, win_ptr, images.coll, (i % flag.line_len) * 64, (i / flag.line_len) * 64);
-		else if (map[i] == 'P')
-			mlx_put_image_to_window(mlx_ptr, win_ptr, images.hero, (i % flag.line_len) * 64, (i / flag.line_len) * 64);
-		else if (map[i] == 'E')
-			mlx_put_image_to_window(mlx_ptr, win_ptr, images.exit, (i % flag.line_len) * 64, (i / flag.line_len) * 64);
+		mlx_put_image_to_window(set.mlx, set.win, img.tile, (i % set.line_len) * 64, (i / set.line_len) * 64);
+		if (set.map[i] == '1')
+			mlx_put_image_to_window(set.mlx, set.win, img.wall, (i % set.line_len) * 64, (i / set.line_len) * 64);
+		else if (set.map[i] == 'C')
+			mlx_put_image_to_window(set.mlx, set.win, img.coll, (i % set.line_len) * 64, (i / set.line_len) * 64);
+		else if (i == set.p)
+			mlx_put_image_to_window(set.mlx, set.win, img.motion1, (i % set.line_len) * 64, (i / set.line_len) * 64);
+		else if (set.map[i] == 'E')
+			mlx_put_image_to_window(set.mlx, set.win, img.exit, (i % set.line_len) * 64, (i / set.line_len) * 64);
+
 	}
-	mlx_loop(mlx_ptr);
-	return (0);
 }
 
 int	main(int argc, char **argv)
 {
-	int		fd;
+	int			fd;
+	t_set		game;
+	t_images	img;
 
 	if (argc != 2)
 		return (write(2, "ERROR\n", 6));
@@ -137,11 +157,17 @@ int	main(int argc, char **argv)
 		write(2, "OPEN FALURE", 11);
 		exit(EXIT_FAILURE);
 	}
-	if (check_map(fd) == ERROR)
+	memset(&game, 0, sizeof(game));
+	if (check_map(fd, &game) == ERROR)
 	{
 		close(fd);
 		return (write(2, "ERROR\nIT CAN'T BE SOLVED\n", 25));//perror?
 	}
+	initialize_set(&game, &img);
+	draw_map(game, img);
+	mlx_key_hook(game.win, key_handler, &game);
+	mlx_string_put(game.mlx, game.win, 32, 32, 0xFFFFFF, "GO TO HEEEEEEEELLLO");
+	mlx_loop(game.mlx);
 	close(fd); //close 왜 해줘??
 	return (0);
 }

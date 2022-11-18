@@ -6,7 +6,7 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 15:13:10 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/17 20:27:08 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/18 21:03:23 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,62 +23,62 @@ void	print_binary(int n)
 	}
 }
 
-int check_line_len(t_flags *flags, int i)
+int check_line_len(t_set *set, int i)
 {
-	if ((*flags).map_height == 0)
-		(*flags).line_len = i;
-	else if ((*flags).line_len != i)
+	if (set->map_height == 0)
+		set->line_len = i;
+	else if (set->line_len != i)
 		return (-1);
 	return (0);
 }
 
-int	check_line(char *map, t_flags *flags)
+int	check_line(t_set *set)
 {
 	int			i;
 
 	i = 0;
-	if (map == NULL)
+	if (set->check_map == NULL)
 		return (0);
-	while (map[i] != '\n' && map[i] != '\0')
+	while (set->check_map[i] != '\n' && set->check_map[i] != '\0')
 	{
-		if ((i == 0) || (i == (*flags).line_len - 1))
+		if ((i == 0) || (i == set->line_len - 1))
 		{
-			if (map[i] != '1')
-				(*flags).flag |= WALL_FLAG;
+			if (set->check_map[i] != '1')
+				set->flag |= WALL_FLAG;
 		}
-		if (map[i] == 'C')
+		if (set->check_map[i] == 'C')
 		{
-			(*flags).flag |= COLL_FLAG;
-			(*flags).coll_cnt++;
+			set->flag |= COLL_FLAG;
+			set->coll_cnt++;
 		}
-		else if (map[i] == 'E' && !(EXIT_FLAG & (*flags).flag))
-			(*flags).flag |= EXIT_FLAG;
-		else if (map[i] == 'P' && !(HERO_FLAG & (*flags).flag))
+		else if (set->check_map[i] == 'E' && !(EXIT_FLAG & set->flag))
+			set->flag |= EXIT_FLAG;
+		else if (set->check_map[i] == 'P' && !(HERO_FLAG & set->flag))
 		{
-			(*flags).p = i + (*flags).map_height * (*flags).line_len;
-			(*flags).flag |= HERO_FLAG;
+			set->p = i + (set->map_height * set->line_len);
+			set->flag |= HERO_FLAG;
 		}
-		else if (map[i] != '1' && map[i] != '0')
+		else if (set->check_map[i] != '1' && set->check_map[i] != '0')
 		{
-			printf("map[%d]: %d\n", i, map[i]);
+			printf("map[%d]: %d\n", i, set->check_map[i]);
 			return (ERROR);
 		}
 		i++;
 	}
-	return (check_line_len(flags, i));
+	return (check_line_len(set, i));
 }
 
-int	check_components(char *map, t_flags flag)
+int	check_components(t_set *set)
 {
 	int	i;
 
 	i = 0;
-	while (map && map[i])
+	while (set->map && set->map[i])
 	{
-		if (i < (flag.line_len) || (flag.map_height * (flag.line_len - 1) < i && i < flag.map_height * flag.line_len))
+		if (i < (set->line_len) || (set->map_height * (set->line_len - 1) < i && i < set->map_height * set->line_len))
 		{
-			printf("map[%d]: %c\n", i, map[i]);
-			if (map[i] != '1')
+			printf("map[%d]: %c\n", i, set->map[i]);
+			if (set->map[i] != '1')
 			{
 				write(2, "WALL ERROR\n", 11);
 				return (ERROR);
@@ -86,14 +86,14 @@ int	check_components(char *map, t_flags flag)
 		}
 		i++;
 	}
-	if (WALL_FLAG & flag.flag || !(COLL_FLAG & flag.flag) || \
-		!(EXIT_FLAG & flag.flag) || !(HERO_FLAG & flag.flag))
+	if (WALL_FLAG & set->flag || !(COLL_FLAG & set->flag) || \
+		!(EXIT_FLAG & set->flag) || !(HERO_FLAG & set->flag))
 	{
-		print_binary(flag.flag);
+		print_binary(set->flag);
 		write(2, "COMPONENTS ERROR\n", 17);
 		return (ERROR);
 	}
-	if (flag.line_len < 3 || flag.map_height < 3)
+	if (set->line_len < 3 || set->map_height < 3)
 	{
 		write(2, "LINE TOO SHORT\n", 15);
 		return (ERROR);
