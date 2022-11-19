@@ -6,7 +6,7 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 20:30:19 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/18 21:34:59 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/19 15:35:46 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	pressed_s(t_set *set)
 		set->p += set->line_len;
 	}
 	//mlx_clear_window(set->mlx, set->win);
-	draw_map(*set, *set->imgs);
+	//draw_map(*set);
 }
 
 void	pressed_d(t_set *set)
@@ -62,7 +62,7 @@ void	pressed_d(t_set *set)
 		set->p += 1;
 	}
 	//mlx_clear_window(set->mlx, set->win);
-	draw_map(*set, *set->imgs);
+	//draw_map(*set);
 }
 
 void	pressed_w(t_set *set)
@@ -80,7 +80,7 @@ void	pressed_w(t_set *set)
 		set->p -= set->line_len;
 	}
 	//mlx_clear_window(set->mlx, set->win);
-	draw_map(*set, *set->imgs);
+	//draw_map(*set);
 }
 
 void	pressed_a(t_set *set)
@@ -98,7 +98,7 @@ void	pressed_a(t_set *set)
 		set->p -= 1;
 	}
 	//mlx_clear_window(set->mlx, set->win);
-	draw_map(*set, *set->imgs);
+	//draw_map(*set);
 }
 
 void	pressed_esc(void)

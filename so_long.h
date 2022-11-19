@@ -6,7 +6,7 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 20:48:24 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/18 21:10:37 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/19 16:05:58 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 
 typedef struct s_images
 {
-	void	*motion1;
+	void	*motion[5];
 	void	*motion2;
 	void	*motion3;
 	void	*motion4;
@@ -61,6 +61,7 @@ typedef struct s_settings
 	int			line_len;
 	int			coll_cnt;
 	int			p;
+	int			move_count;
 	char		flag;
 }	t_set;
 
@@ -73,8 +74,8 @@ void	free_string(char **target);
 char	*ft_strnjoin(char **s1, char const *s2, size_t len);
 char	*get_next_line(int fd);
 
-void	draw_map(t_set flag, t_images img);
 void	find_route(char *map, int current, int *collectable, int width);
+int		draw_map(t_set *set);
 int		check_line(t_set *set);
 int		check_components(t_set *flag);
 int		check_flag(char flag, char target);
