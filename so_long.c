@@ -67,19 +67,19 @@ t_images	set_img(void *mlx_ptr)
 	return (imgs);
 }
 
-void	draw_tile(t_set set, void *tile)
-{
-	int		i;
-	int		j;
+// void	draw_tile(t_set set, void *tile)
+// {
+// 	int		i;
+// 	int		j;
 
-	i = -1;
-	while (++i < set.map_height)
-	{
-		j = -1;
-		while (++j < set.line_len)
-			mlx_put_image_to_window(set.mlx, set.win, tile, 64 * j, 64 * i);
-	}
-}
+// 	i = -1;
+// 	while (++i < set.map_height)
+// 	{
+// 		j = -1;
+// 		while (++j < set.line_len)
+// 			mlx_put_image_to_window(set.mlx, set.win, tile, 64 * j, 64 * i);
+// 	}
+// }
 
 int key_handler(int key_code, t_set *flag)
 {
@@ -117,27 +117,29 @@ int	initialize_set(t_set *set, t_images *img)
 	set->win = mlx_new_window(set->mlx, set->line_len * 64, set->map_height * 64, "so_long");
 	*img = set_img(set->mlx);
 	set->imgs = img;
-	draw_tile(*set, img->tile);
 	return (0);
 }
 
 void	draw_map(t_set set, t_images img)
 {
-	int			i;
+	int	i;
+	int	x;
+	int	y;
 
 	i = -1;
 	while (set.map[++i] != '\0')
 	{
-		mlx_put_image_to_window(set.mlx, set.win, img.tile, (i % set.line_len) * 64, (i / set.line_len) * 64);
+		x = (i % set.line_len) * 64;
+		y = (i / set.line_len) * 64;
+		mlx_put_image_to_window(set.mlx, set.win, img.tile, x, y);
 		if (set.map[i] == '1')
-			mlx_put_image_to_window(set.mlx, set.win, img.wall, (i % set.line_len) * 64, (i / set.line_len) * 64);
-		else if (set.map[i] == 'C')
-			mlx_put_image_to_window(set.mlx, set.win, img.coll, (i % set.line_len) * 64, (i / set.line_len) * 64);
+			mlx_put_image_to_window(set.mlx, set.win, img.wall, x, y);
 		else if (i == set.p)
-			mlx_put_image_to_window(set.mlx, set.win, img.motion1, (i % set.line_len) * 64, (i / set.line_len) * 64);
+			mlx_put_image_to_window(set.mlx, set.win, img.motion1, x, y);
+		else if (set.map[i] == 'C')
+			mlx_put_image_to_window(set.mlx, set.win, img.coll, x, y);
 		else if (set.map[i] == 'E')
-			mlx_put_image_to_window(set.mlx, set.win, img.exit, (i % set.line_len) * 64, (i / set.line_len) * 64);
-
+			mlx_put_image_to_window(set.mlx, set.win, img.exit, x, y);
 	}
 }
 

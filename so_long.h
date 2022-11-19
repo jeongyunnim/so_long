@@ -47,6 +47,7 @@ typedef struct s_images
 	void	*wall;
 	void	*coll;
 	void	*exit;
+	void	*exit_active;
 }	t_images;
 
 typedef struct s_settings
