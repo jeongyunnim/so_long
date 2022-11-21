@@ -76,6 +76,7 @@ char	*ft_strnjoin(char **s1, char const *s2, size_t len);
 char	*get_next_line(int fd);
 
 void	find_route(char *map, int current, int *collectable, int width);
+int		check_valid(t_set *set);
 int		draw_map(t_set *set);
 int		check_line(t_set *set);
 int		check_components(t_set *flag);

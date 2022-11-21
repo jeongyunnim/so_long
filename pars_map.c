@@ -14,8 +14,17 @@
 
 int check_line_len(t_set *set, int i)
 {
+	int	len;
+	int temp;
+
+	len = set->line_len;
+	temp = i;
+	printf("map_height: %d\n%s\n%d,%d", set->map_height, set->check_map, len, temp);
 	if (set->map_height == 0)
+	{
+		printf("초기화 할 게\n");
 		set->line_len = i;
+	}
 	else if (set->line_len != i)
 	{
 		set->flag |= RECT_FLAG;
@@ -96,6 +105,7 @@ void	print_error(char flag)
 		write(1, "HAVE NO PLAYER\n", 15);
 	if (RECT_FLAG &flag)
 		write(1, "HAVE NO PLAYER\n", 15);
+	write(1, "MAP CAN NOT BE DRAWN\n", 21);
 }
 
 void	find_route(char *map, int current, int *collectable, int width)

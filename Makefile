@@ -21,6 +21,7 @@ SRC			=	./so_long.c \
 				./pars_map.c\
 				./split_function.c\
 				./ft_itoa.c\
+				# ./mlx_util.c\
 
 OBJ		=	$(SRC:%.c=%.o)
 RM		=	rm -f
