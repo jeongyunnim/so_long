@@ -6,7 +6,7 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 20:48:24 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/19 16:05:58 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/21 17:54:21 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,24 +30,21 @@
 # define END_FLAG	0x10 // 0001 0000
 
 /*key code*/
-# define W		13
-# define S		1
-# define A		0
-# define D		2
-# define ESC	53
+# define W			13
+# define S			1
+# define A			0
+# define D			2
+# define ESC		53
+# define DESTROY	17
 
 typedef struct s_images
 {
 	void	*motion[5];
-	void	*motion2;
-	void	*motion3;
-	void	*motion4;
-	void	*motion5;
+	void	*exit[2];
+	void	*enm[2];
 	void	*tile;
 	void	*wall;
 	void	*coll;
-	void	*exit;
-	void	*exit_active;
 }	t_images;
 
 typedef struct s_settings
@@ -57,16 +54,17 @@ typedef struct s_settings
 	void		*win;
 	char		*map;
 	char		*check_map;
+	char		*move_count;
 	int			map_height;
 	int			line_len;
 	int			coll_cnt;
 	int			p;
-	int			move_count;
+	int			e;
 	char		flag;
 }	t_set;
 
-
-
+char	*ft_itoa(int n);
+void	*ft_calloc(size_t n, size_t size);
 
 size_t	ft_strlcpy(char *dest, const char *src, size_t dest_size);
 void	*ft_memset(void *bytes, int value, size_t len);
@@ -83,10 +81,9 @@ int		check_flag(char flag, char target);
 int			initialize_set(t_set *set, t_images *img);
 t_images	set_img(void *mlx_ptr);
 
-void	pressed_s(t_set *flag);
-void	pressed_d(t_set *flag);
-void	pressed_w(t_set *flag);
-void	pressed_a(t_set *flag);
+void	pressed_wasd(int keycode, t_set *set);
 void	pressed_esc(void);
+
+void	clear_game(t_set *set);
 
 #endif

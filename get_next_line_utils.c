@@ -6,11 +6,22 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 20:49:09 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/16 19:36:14 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/21 17:05:50 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
+
+void	*ft_calloc(size_t n, size_t size)
+{
+	void	*p;
+
+	p = (void *)malloc(n * size);
+	if (p == NULL)
+		return (NULL);
+	ft_memset(p, 0, n * size);
+	return (p);
+}
 
 void	*ft_memset(void *bytes, int value, size_t len)
 {

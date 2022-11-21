@@ -6,7 +6,7 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 20:30:19 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/19 15:35:46 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/21 18:18:18 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,77 +29,51 @@ void	free_string(char **target)
 	*target = NULL;
 }
 
-void	pressed_s(t_set *set)
+void	pressed_wasd(int keycode, t_set *set)
 {
-	int	check;
+	static int move_cnt;
+	int		check;
+	int 	move;
 
-	check = set->p + set->line_len;
-	if (set->map[check] != '1')
+	move = 0;
+	check = set->p;
+	if (keycode == W)
+		move = set->line_len * -1;
+	else if (keycode == A)
+		move = -1;
+	else if (keycode == S)
+		move = set->line_len;
+	else if (keycode == D)
+		move = 1;
+	if (set->map[check + move] != '1')
 	{
-		if (set->map[check] == 'C')
-		{
+		set->p += move;
+		if (set->map[set->p] == 'C')
 			set->coll_cnt--;
-		}
-		set->map[set->p] = '0';
-		set->p += set->line_len;
+		if (set->map[set->p] != 'E')
+			set->map[set->p] = '0';
+		else if (set->coll_cnt == 1)
+			clear_game(set);
+		set->move_count = ft_itoa(++move_cnt);
+		if (set->move_count == NULL)
+			exit(EXIT_FAILURE);
 	}
-	//mlx_clear_window(set->mlx, set->win);
-	//draw_map(*set);
+	if (set->map[set->e + move] != '1' && set->map[set->e + move] != 'C' && set->map[set->e + move] != 'E')
+	{
+		set->e += move;
+		set->map[set->e - move] = '0';
+		set->map[set->e] = '@';
+	}
+	if (set->e == set->p)
+		clear_game(set);
 }
 
-void	pressed_d(t_set *set)
+void	clear_game(t_set *set)
 {
-	int	check;
-
-	check = set->p + 1;
-	if (set->map[check] != '1')
-	{
-		if (set->map[check] == 'C')
-		{
-			set->coll_cnt--;
-		}
-		set->map[set->p] = '0';
-		set->p += 1;
-	}
-	//mlx_clear_window(set->mlx, set->win);
-	//draw_map(*set);
-}
-
-void	pressed_w(t_set *set)
-{	
-	int	check;
-
-	check = set->p - set->line_len;
-	if (set->map[check] != '1')
-	{
-		if (set->map[check] == 'C')
-		{
-			set->coll_cnt--;
-		}
-		set->map[set->p] = '0';
-		set->p -= set->line_len;
-	}
-	//mlx_clear_window(set->mlx, set->win);
-	//draw_map(*set);
-}
-
-void	pressed_a(t_set *set)
-{
-	int	check;
-
-	check = set->p - 1;
-	if (set->map[check] != '1')
-	{
-		if (set->map[check] == 'C')
-		{
-			set->coll_cnt--;
-		}
-		set->map[set->p] = '0';
-		set->p -= 1;
-	}
-	//mlx_clear_window(set->mlx, set->win);
-	//draw_map(*set);
-}
+	mlx_destroy_window(set->mlx, set->win);
+	write(1, "GAME CLEAR\n", 11);
+	exit(EXIT_SUCCESS);
+}//무슨 차이??
 
 void	pressed_esc(void)
 {

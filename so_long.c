@@ -6,7 +6,7 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 19:09:59 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/19 16:15:46 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/21 17:54:46 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 int	check_map(int fd, t_set *set) // free 잘 해줬는지 체크
 {
+	int	count_temp;
+
+	count_temp = 0;
 	while (check_flag(END_FLAG, set->flag) == -1)
 	{
 		set->check_map = get_next_line(fd);
@@ -35,15 +38,14 @@ int	check_map(int fd, t_set *set) // free 잘 해줬는지 체크
 	set->check_map = strdup(set->map);
 	if (set->check_map == NULL)
 		return (ERROR);
+	count_temp = set->coll_cnt + 1;
 	find_route(set->check_map, set->p, &set->coll_cnt, set->line_len);
-	free_string(&set->check_map);
-	printf("find_map: %s\n", set->map);
 	if (set->coll_cnt != 0)
 	{
 		write(1, "ROUTE ERROR\n",12);
-		write(1, "IT CAN'T BE SOLVED\n", 19);
 		return (ERROR);
 	}
+	set->coll_cnt = count_temp;
 	write(1, "YOU CAN SOLVE! TRY! TRY!\n", 24);
 	return (0);
 }
@@ -51,61 +53,30 @@ int	check_map(int fd, t_set *set) // free 잘 해줬는지 체크
 t_images	set_img(void *mlx_ptr)
 {
 	t_images	imgs;
-	int			width;
-	int			height;
+	int			w;
+	int			h;
 
 	memset(&imgs, 0, sizeof(imgs));
-	imgs.motion[0] = mlx_xpm_file_to_image(mlx_ptr, "./source/hero1.xpm", &width, &height);
-	imgs.motion[1] = mlx_xpm_file_to_image(mlx_ptr, "./source/hero2.xpm", &width, &height);
-	imgs.motion[2] = mlx_xpm_file_to_image(mlx_ptr, "./source/hero3.xpm", &width, &height);
-	imgs.motion[3] = mlx_xpm_file_to_image(mlx_ptr, "./source/hero4.xpm", &width, &height);
-	imgs.motion[4] = mlx_xpm_file_to_image(mlx_ptr, "./source/hero5.xpm", &width, &height);
-	imgs.tile = mlx_xpm_file_to_image(mlx_ptr, "./source/tile.xpm", &width, &height);
-	imgs.wall = mlx_xpm_file_to_image(mlx_ptr, "./source/wall.xpm", &width, &height);
-	imgs.coll = mlx_xpm_file_to_image(mlx_ptr, "./source/coll.xpm", &width, &height);
-	imgs.exit = mlx_xpm_file_to_image(mlx_ptr, "./source/tile.xpm", &width, &height);
+	imgs.motion[0] = mlx_xpm_file_to_image(mlx_ptr, "./source/hero1.xpm", &w, &h);
+	imgs.motion[1] = mlx_xpm_file_to_image(mlx_ptr, "./source/hero2.xpm", &w, &h);
+	imgs.motion[2] = mlx_xpm_file_to_image(mlx_ptr, "./source/hero3.xpm", &w, &h);
+	imgs.motion[3] = mlx_xpm_file_to_image(mlx_ptr, "./source/hero4.xpm", &w, &h);
+	imgs.motion[4] = mlx_xpm_file_to_image(mlx_ptr, "./source/hero5.xpm", &w, &h);
+	imgs.exit[0] = mlx_xpm_file_to_image(mlx_ptr, "./source/exit1.xpm", &w, &h);
+	imgs.exit[1] = mlx_xpm_file_to_image(mlx_ptr, "./source/exit2.xpm", &w, &h);
+	imgs.enm[0] = mlx_xpm_file_to_image(mlx_ptr, "./source/enm1.xpm", &w, &h);
+	imgs.enm[1] = mlx_xpm_file_to_image(mlx_ptr, "./source/enm2.xpm", &w, &h);
+	imgs.tile = mlx_xpm_file_to_image(mlx_ptr, "./source/tile.xpm", &w, &h);
+	imgs.wall = mlx_xpm_file_to_image(mlx_ptr, "./source/wall.xpm", &w, &h);
+	imgs.coll = mlx_xpm_file_to_image(mlx_ptr, "./source/coll.xpm", &w, &h);
 	return (imgs);
 }
 
-// void	draw_tile(t_set set, void *tile)
-// {
-// 	int		i;
-// 	int		j;
-
-// 	i = -1;
-// 	while (++i < set.map_height)
-// 	{
-// 		j = -1;
-// 		while (++j < set.line_len)
-// 			mlx_put_image_to_window(set.mlx, set.win, tile, 64 * j, 64 * i);
-// 	}
-// }
-
-int key_handler(int key_code, t_set *flag)
+int key_handler(int key_code, t_set *set)
 {
-	if (key_code == S)
+	if (key_code == S || key_code == D || key_code == W || key_code == A)
 	{
-		printf("S: %d\n", key_code);
-		pressed_s(flag);
-		flag->move_count++;
-	}
-	if (key_code == D)
-	{
-		printf("D: %d\n", key_code);
-		pressed_d(flag);
-		flag->move_count++;
-	}
-	if (key_code == W)
-	{
-		printf("W: %d\n", key_code);
-		pressed_w(flag);
-		flag->move_count++;
-	}
-	if (key_code == A)
-	{
-		printf("A: %d\n", key_code);
-		pressed_a(flag);
-		flag->move_count++;
+		pressed_wasd(key_code, set);
 	}
 	if (key_code == ESC)
 	{
@@ -115,19 +86,41 @@ int key_handler(int key_code, t_set *flag)
 	return (0);
 }
 
-int mouse_handler(int button, int x, int y, t_set *set)
+void	error_handler(void)
 {
-	printf("key: %d\n", button);
-	printf("(x,y): (%d,%d)\n", x, y);
-	free(set->check_map);
-	return (0);
+	perror("어쩌라고..?\n");
+	exit(EXIT_FAILURE);
 }
+
+void	make_enm(t_set *set)
+{
+	int i;
+
+	i = 0;
+	while (set->check_map[i] != '\0')
+	{
+		if (set->check_map[i] == '@' && set->map[i] != 'C')
+		{
+			set->e = i;
+			set->map[i] = '@';
+			return ;
+		}
+		i++;
+	}
+
+}
+
 int	initialize_set(t_set *set, t_images *img)
 {
+	make_enm(set);
 	set->mlx = mlx_init();
 	set->win = mlx_new_window(set->mlx, set->line_len * 64, set->map_height * 64, "so_long");
 	*img = set_img(set->mlx);
 	set->imgs = img;
+	set->move_count = ft_itoa(0);
+	printf("count: %s\n", set->move_count);
+	if (set->move_count == NULL)
+		error_handler();
 	return (0);
 }
 
@@ -159,9 +152,18 @@ int	draw_map(t_set *set)
 		else if (set->map[i] == 'C')
 			mlx_put_image_to_window(set->mlx, set->win, set->imgs->coll, x, y);
 		else if (set->map[i] == 'E')
-			mlx_put_image_to_window(set->mlx, set->win, set->imgs->exit, x, y);
+		{
+			if (set->coll_cnt == 1)
+				mlx_put_image_to_window(set->mlx, set->win, set->imgs->exit[1], x, y);
+			else
+				mlx_put_image_to_window(set->mlx, set->win, set->imgs->exit[0], x, y);
+		}
+		else if (set->map[i] == '@')
+			mlx_put_image_to_window(set->mlx, set->win, set->imgs->enm[delay_motion() % 2], x, y);
+
 	}
-	mlx_string_put(set->mlx, set->win, 32, 32, 0xFFFFFF, "move: ");
+	mlx_string_put(set->mlx, set->win, 32, 64, 0x0, "move: ");
+	mlx_string_put(set->mlx, set->win, 70, 64, 0x0, set->move_count);
 	return (0);
 }
 
@@ -193,13 +195,12 @@ int	main(int argc, char **argv)
 		close(fd);
 		return (write(2, "ERROR\nIT CAN'T BE SOLVED\n", 25));//perror?
 	}
+	close(fd);
 	initialize_set(&game, &img);
 	draw_map(&game);
 	mlx_key_hook(game.win, key_handler, &game);
-	mlx_mouse_hook(game.win, mouse_handler, &game);
 	mlx_loop_hook(game.mlx, draw_map, &game);
-	mlx_hook(game.win, 17, 0, destroy_handler, &game);
+	mlx_hook(game.win, DESTROY, 0, destroy_handler, &game);
 	mlx_loop(game.mlx);
-	close(fd); //close 왜 해줘??
 	return (0);
 }

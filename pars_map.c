@@ -6,7 +6,7 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 15:13:10 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/18 21:03:23 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/21 17:49:36 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,16 @@ int	check_line(t_set *set)
 int	check_components(t_set *set)
 {
 	int	i;
+	int height;
+	int width;
 
 	i = 0;
+	height = set->map_height;
+	width = set->line_len;
 	while (set->map && set->map[i])
 	{
-		if (i < (set->line_len) || (set->map_height * (set->line_len - 1) < i && i < set->map_height * set->line_len))
+		if (i < width || ((height - 1) * width <= i && i < height * width))
 		{
-			printf("map[%d]: %c\n", i, set->map[i]);
 			if (set->map[i] != '1')
 			{
 				write(2, "WALL ERROR\n", 11);
@@ -104,7 +107,7 @@ int	check_components(t_set *set)
 void	find_route(char *map, int current, int *collectable, int width)
 {
 	static int	coll_flag;
-	// int	i;
+	//int	i;
 
 	// i = 0;
 	//printf("===============================\n");
@@ -115,20 +118,15 @@ void	find_route(char *map, int current, int *collectable, int width)
 	//		printf("\n");
 	//	i++;
 	//}
-	if (map[current] == 'P')
-	{
-		printf("P: %d\n", current);
-		printf("coll_flag: %d, collectable: %d\n", coll_flag, *collectable);
-		coll_flag = *collectable + 1;
-	}
-	else if (map[current] == 'C' || map[current] == 'E')
-		coll_flag--;
-	if (coll_flag == 0) // escape까지 포함하기 때문에 -1.
+	
+	if (map[current] == 'C' || map[current] == 'E')
+		coll_flag++;
+	if (coll_flag == *collectable + 1) // escape까지 포함하기 때문에 -1.
 	{
 		*collectable = 0;
 		return ;
 	}
-	else if (map[current] != '@' && map[current] != '1' && coll_flag != 0)
+	else if (map[current] != '@' && map[current] != '1' && coll_flag != *collectable + 1)
 	{
 		map[current] = '@';
 		find_route(map, current + width, collectable, width);
