@@ -6,7 +6,7 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 19:09:59 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/21 21:56:28 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/21 22:30:24 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,6 @@ int key_handler(int key_code, t_set *set)
 	return (0);
 }
 
-void	error_handler(void)
-{
-	perror("어쩌라고..?\n");
-	exit(EXIT_FAILURE);
-}
-
 void	make_enm(t_set *set)
 {
 	int 	i;
@@ -113,7 +107,6 @@ void	make_enm(t_set *set)
 		}
 		i++;
 	}
-
 }
 
 int	initialize_set(t_set *set, t_images *img)
@@ -125,7 +118,7 @@ int	initialize_set(t_set *set, t_images *img)
 	set->imgs = img;
 	set->move_count = ft_itoa(0);
 	if (set->move_count == NULL)
-		error_handler();
+		return (ERROR);
 	return (0);
 }
 
@@ -212,10 +205,11 @@ int	main(int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 	ft_memset(&game, 0, sizeof(game));
-	if (check_map(fd, &game) == ERROR)
-		return (write(2, "ERROR\nIT CAN'T BE SOLVED\n", 25));
-	close(fd);
-	initialize_set(&game, &img);
+	if (check_map(fd, &game) == ERROR || initialize_set(&game, &img) == ERROR)
+	{
+		write(2, "ERROR\nMAP CAN'T NOT BE DRAWN\n", 29);
+		exit(EXIT_FAILURE);
+	}
 	mlx_key_hook(game.win, key_handler, &game);
 	mlx_loop_hook(game.mlx, draw_map, &game);
 	mlx_hook(game.win, DESTROY, 0, destroy_handler, &game);

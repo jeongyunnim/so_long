@@ -6,7 +6,7 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 20:48:24 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/21 20:52:23 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/21 22:26:38 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,10 @@
 # define HERO_FLAG	0x02 // 0000 0010
 # define COLL_FLAG	0x04 // 0000 0100
 # define EXIT_FLAG	0x08 // 0000 1000
-# define END_FLAG	0x10 // 0001 0000
-# define CLEAR_FLAG	0x20 // 0010 0000
-# define ENM_FLAG	0x40 // 0100 0000
+# define RECT_FLAG	0x10 // 0001 0000
+# define END_FLAG	0x20 // 0010 0000
+# define CLEAR_FLAG	0x40 // 0100 0000
+# define ENM_FLAG	0x80 // 1000 0000
 
 /*key code*/
 # define W			13
@@ -85,6 +86,7 @@ t_images	set_img(void *mlx_ptr);
 
 void	pressed_wasd(int keycode, t_set *set);
 void	pressed_esc(void);
+void	print_error(char flag);
 
 void	clear_game(t_set *set);
 
