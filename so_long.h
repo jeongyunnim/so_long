@@ -6,7 +6,7 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 20:48:24 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/21 17:54:21 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/21 20:52:23 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 # define COLL_FLAG	0x04 // 0000 0100
 # define EXIT_FLAG	0x08 // 0000 1000
 # define END_FLAG	0x10 // 0001 0000
+# define CLEAR_FLAG	0x20 // 0010 0000
+# define ENM_FLAG	0x40 // 0100 0000
 
 /*key code*/
 # define W			13

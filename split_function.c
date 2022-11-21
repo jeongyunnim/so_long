@@ -6,7 +6,7 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 20:30:19 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/21 18:18:18 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/21 21:56:32 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,29 +53,38 @@ void	pressed_wasd(int keycode, t_set *set)
 		if (set->map[set->p] != 'E')
 			set->map[set->p] = '0';
 		else if (set->coll_cnt == 1)
+		{
+			set->flag |= CLEAR_FLAG;
 			clear_game(set);
+		}
 		set->move_count = ft_itoa(++move_cnt);
 		if (set->move_count == NULL)
 			exit(EXIT_FAILURE);
 	}
-	if (set->map[set->e + move] != '1' && set->map[set->e + move] != 'C' && set->map[set->e + move] != 'E')
+	if (check_flag(ENM_FLAG, set->flag) == 0)
 	{
-		set->e += move;
-		set->map[set->e - move] = '0';
-		set->map[set->e] = '@';
+		if (set->map[set->e + move] != '1' && set->map[set->e + move] != 'C' && set->map[set->e + move] != 'E')
+		{
+			set->e += move;
+			set->map[set->e - move] = '0';
+			set->map[set->e] = '@';
+		}
+		if (set->e == set->p)
+			clear_game(set);
 	}
-	if (set->e == set->p)
-		clear_game(set);
 }
 
 void	clear_game(t_set *set)
 {
-	mlx_destroy_window(set->mlx, set->win);
-	write(1, "GAME CLEAR\n", 11);
+	if (check_flag(CLEAR_FLAG, set->flag) == -1)
+		write(1, "GAME OVER\n", 10);
+	else
+		write(1, "GAME CLEAR\n", 11);
 	exit(EXIT_SUCCESS);
 }//무슨 차이??
 
 void	pressed_esc(void)
 {
+	write(1, "GAME OVER\n", 11);
 	exit(EXIT_SUCCESS);
 }

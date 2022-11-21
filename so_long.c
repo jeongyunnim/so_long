@@ -6,7 +6,7 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 19:09:59 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/21 17:54:46 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/21 21:56:28 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ int	check_map(int fd, t_set *set) // free 잘 해줬는지 체크
 		return (ERROR);
 	}
 	set->coll_cnt = count_temp;
-	write(1, "YOU CAN SOLVE! TRY! TRY!\n", 24);
+	write(1, "YOU CAN SOLVE! TRY! TRY!\n", 25);
+	close(fd);
 	return (0);
 }
 
@@ -80,7 +81,6 @@ int key_handler(int key_code, t_set *set)
 	}
 	if (key_code == ESC)
 	{
-		printf("ESC: %d\n", key_code);
 		pressed_esc();
 	}
 	return (0);
@@ -94,13 +94,19 @@ void	error_handler(void)
 
 void	make_enm(t_set *set)
 {
-	int i;
+	int 	i;
+	char	locate;
+	char	component;
 
 	i = 0;
+
 	while (set->check_map[i] != '\0')
 	{
-		if (set->check_map[i] == '@' && set->map[i] != 'C')
+		locate = set->check_map[i];
+		component = set->map[i];
+		if (locate == '@' && component != 'C' && component != 'E' && i != set->p)
 		{
+			set->flag |= ENM_FLAG;
 			set->e = i;
 			set->map[i] = '@';
 			return ;
@@ -118,19 +124,25 @@ int	initialize_set(t_set *set, t_images *img)
 	*img = set_img(set->mlx);
 	set->imgs = img;
 	set->move_count = ft_itoa(0);
-	printf("count: %s\n", set->move_count);
 	if (set->move_count == NULL)
 		error_handler();
 	return (0);
 }
 
-int	delay_motion(void)
+int	deley_n(int n)
 {
-	static int t;
+	static unsigned int t;
 	
 	t++;
-	//printf("t: %d\n",(t/20) % 5);
-	return ((t/10) % 5);
+	return ((t/12) % n);
+}
+
+void draw_exit(t_set *set, int x, int y)
+{
+	if (set->coll_cnt == 1)
+		mlx_put_image_to_window(set->mlx, set->win, set->imgs->exit[1], x, y);
+	else
+		mlx_put_image_to_window(set->mlx, set->win, set->imgs->exit[0], x, y);
 }
 
 int	draw_map(t_set *set)
@@ -148,19 +160,13 @@ int	draw_map(t_set *set)
 		if (set->map[i] == '1')
 			mlx_put_image_to_window(set->mlx, set->win, set->imgs->wall, x, y);
 		else if (i == set->p)
-			mlx_put_image_to_window(set->mlx, set->win, set->imgs->motion[delay_motion()], x, y);
+			mlx_put_image_to_window(set->mlx, set->win, set->imgs->motion[deley_n(5)], x, y);
 		else if (set->map[i] == 'C')
 			mlx_put_image_to_window(set->mlx, set->win, set->imgs->coll, x, y);
 		else if (set->map[i] == 'E')
-		{
-			if (set->coll_cnt == 1)
-				mlx_put_image_to_window(set->mlx, set->win, set->imgs->exit[1], x, y);
-			else
-				mlx_put_image_to_window(set->mlx, set->win, set->imgs->exit[0], x, y);
-		}
+			draw_exit(set, x, y);
 		else if (set->map[i] == '@')
-			mlx_put_image_to_window(set->mlx, set->win, set->imgs->enm[delay_motion() % 2], x, y);
-
+			mlx_put_image_to_window(set->mlx, set->win, set->imgs->enm[deley_n(2)], x, y);
 	}
 	mlx_string_put(set->mlx, set->win, 32, 64, 0x0, "move: ");
 	mlx_string_put(set->mlx, set->win, 70, 64, 0x0, set->move_count);
@@ -173,6 +179,22 @@ int	destroy_handler(t_set *set)
 	exit(EXIT_SUCCESS);
 	return (0);
 }
+
+int	check_extension(char *target)
+{
+	int	i;
+
+	i = 0;
+	while (target != NULL && target[i] != '\0')
+	{
+		i++;
+	}
+	if (target[i - 4] != '.' || target[i - 3] != 'b' || \
+	target[i - 2] != 'e' || target[i - 1] != 'r')
+		return (ERROR);
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
 	int			fd;
@@ -180,24 +202,20 @@ int	main(int argc, char **argv)
 	t_images	img;
 
 	if (argc != 2)
-		return (write(2, "ERROR\n", 6));
-	//if (argv[1] != "*.ber")
-	//	return (write(2, "ERROR\n", 6));
+		return (write(2, "ERROR\nARGUMENT COUNT ERROR\n", 27));
+	if (check_extension(argv[1]) == ERROR)
+		return (write(2, "ERROR\nFILENAME EXTENSION ERROR\n", 31));
 	fd = open(argv[1], O_RDONLY);
-	if (fd < 0)
+	if (fd <= 0)
 	{
-		write(2, "OPEN FALURE", 11);
+		perror("OPEN FALURE\n");
 		exit(EXIT_FAILURE);
 	}
-	memset(&game, 0, sizeof(game));
+	ft_memset(&game, 0, sizeof(game));
 	if (check_map(fd, &game) == ERROR)
-	{
-		close(fd);
-		return (write(2, "ERROR\nIT CAN'T BE SOLVED\n", 25));//perror?
-	}
+		return (write(2, "ERROR\nIT CAN'T BE SOLVED\n", 25));
 	close(fd);
 	initialize_set(&game, &img);
-	draw_map(&game);
 	mlx_key_hook(game.win, key_handler, &game);
 	mlx_loop_hook(game.mlx, draw_map, &game);
 	mlx_hook(game.win, DESTROY, 0, destroy_handler, &game);
