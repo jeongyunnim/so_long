@@ -6,7 +6,7 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 19:18:09 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/17 17:04:36 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/22 15:43:08 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,31 +43,28 @@ static char	*ret_line(char *dest, char *src, char *save, int *flag)
 char	*get_next_line(int fd)
 {
 	static char	save[BUFFER_SIZE + 1];
-	char		buff[BUFFER_SIZE + 1];
-	char		*line;
-	int			flag;
+	t_getline	ret;
 
-	flag = 0;
-	line = NULL;
+	ft_memset(&ret, 0, sizeof(ret));
 	while (fd > 0)
 	{
-		ft_memset(buff, 0, BUFFER_SIZE + 1);
+		ft_memset(ret.buff, 0, BUFFER_SIZE + 1);
 		if (*save != 0)
 		{
-			line = ret_line(line, save, save, &flag);
-			if (line == NULL)
+			ret.line = ret_line(ret.line, save, save, &(ret.flag));
+			if (ret.line == NULL)
 				return (NULL);
 		}
-		else if (read(fd, buff, BUFFER_SIZE) <= 0)
+		else if (read(fd, ret.buff, BUFFER_SIZE) <= 0)
 			break ;
 		else
 		{
-			line = ret_line(line, buff, save, &flag);
-			if (line == NULL)
+			ret.line = ret_line(ret.line, ret.buff, save, &(ret.flag));
+			if (ret.line == NULL)
 				return (NULL);
 		}
-		if (flag == 1)
-			return (line);
+		if (ret.flag == 1)
+			return (ret.line);
 	}
-	return (line);
+	return (ret.line);
 }

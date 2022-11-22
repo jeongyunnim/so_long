@@ -6,7 +6,7 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 20:49:09 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/21 17:05:50 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/22 15:43:24 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,28 @@ char	*ft_strnjoin(char **s1, char const *s2, size_t len)
 	}
 	ft_strlcpy(res + s1_len, s2, len + 1);
 	return (res);
+}
+
+char	*ft_strdup(const char *str)
+{
+	int		i;
+	int		str_len;
+	char	*str_dup;
+
+	i = 0;
+	str_len = 0;
+	while (str != NULL && str[str_len] != '\0')
+	{
+		str_len++;
+	}
+	str_dup = (char *)malloc(sizeof(char) * (str_len + 1));
+	if (str_dup == NULL)
+		return (NULL);
+	while (i < str_len)
+	{
+		str_dup[i] = str[i];
+		i++;
+	}
+	str_dup[i] = '\0';
+	return (str_dup);
 }

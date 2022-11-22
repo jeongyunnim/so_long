@@ -6,7 +6,7 @@
 #    By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/04 15:08:56 by jeseo             #+#    #+#              #
-#    Updated: 2022/11/21 16:49:03 by jeseo            ###   ########.fr        #
+#    Updated: 2022/11/22 16:45:31 by jeseo            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,13 +15,16 @@ CFLAGS		=	-Wall -Wextra -Werror -g3 -fsanitize=address
 MLX_FLAGS 	= 	-L./mlx -lmlx -framework OpenGL -framework Appkit
 NAME		=	./so_long
 INC			=	./so_long.h
-SRC			=	./so_long.c \
+SRC			=	./main.c\
+				./draw_map.c\
+				./event_handler.c\
+				./so_long_utils.c\
+				./so_long.c \
 				./get_next_line.c\
 				./get_next_line_utils.c\
 				./pars_map.c\
 				./split_function.c\
 				./ft_itoa.c\
-				# ./mlx_util.c\
 
 OBJ		=	$(SRC:%.c=%.o)
 RM		=	rm -f

@@ -6,7 +6,7 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 20:48:24 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/21 22:26:38 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/22 16:57:51 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <string.h>
 # include <stdio.h>
 
-# define BUFFER_SIZE	100
+# define BUFFER_SIZE	200
 # define ERROR			-1
 
 /*변화를 알 때 효율적*/
@@ -42,7 +42,7 @@
 
 typedef struct s_images
 {
-	void	*motion[5];
+	void	*mot[5];
 	void	*exit[2];
 	void	*enm[2];
 	void	*tile;
@@ -66,29 +66,55 @@ typedef struct s_settings
 	char		flag;
 }	t_set;
 
-char	*ft_itoa(int n);
-void	*ft_calloc(size_t n, size_t size);
+typedef struct s_size
+{
+	void	*mlx;
+	void	*win;
+	int		x;
+	int		y;
+}	t_size;
 
-size_t	ft_strlcpy(char *dest, const char *src, size_t dest_size);
-void	*ft_memset(void *bytes, int value, size_t len);
-void	free_string(char **target);
-char	*ft_strnjoin(char **s1, char const *s2, size_t len);
-char	*get_next_line(int fd);
+typedef struct s_getline
+{
+	char	buff[BUFFER_SIZE + 1];
+	char	*line;
+	int		flag;
+}	t_getline;
 
-void	find_route(char *map, int current, int *collectable, int width);
-int		check_valid(t_set *set);
-int		draw_map(t_set *set);
-int		check_line(t_set *set);
-int		check_components(t_set *flag);
-int		check_flag(char flag, char target);
+char		*ft_itoa(int n);
+void		*ft_calloc(size_t n, size_t size);
+char		*ft_strdup(const char *str);
+void		sprint_img(t_set *set, void *img[], int i);
 
-int			initialize_set(t_set *set, t_images *img);
 t_images	set_img(void *mlx_ptr);
 
-void	pressed_wasd(int keycode, t_set *set);
-void	pressed_esc(void);
-void	print_error(char flag);
+size_t		ft_strlcpy(char *dest, const char *src, size_t dest_size);
+void		*ft_memset(void *bytes, int value, size_t len);
+void		free_string(char **target);
+char		*ft_strnjoin(char **s1, char const *s2, size_t len);
+char		*get_next_line(int fd);
 
-void	clear_game(t_set *set);
+void		find_route(char *map, int current, int *collectable, int width);
+int			check_valid(t_set *set);
+int			draw_map(t_set *set);
+int			check_line(t_set *set);
+int			check_components(t_set *flag);
+int			check_flag(char flag, char target);
+int			check_map(int fd, t_set *set);
+int			check_extension(char *target);
+
+int			initialize_set(t_set *set, t_images *img);
+
+void		pressed_wasd(int keycode, t_set *set);
+void		pressed_esc(void);
+void		print_error(t_set set);
+void		draw_exit(t_set *set, int x, int y);
+
+void		clear_game(t_set *set);
+void		make_enm(t_set *set);
+int			deley_n(int n);
+int			destroy_handler(t_set *set);
+int			key_handler(int key_code, t_set *set);
+void		movement(t_set *set, char current, int move, char who);
 
 #endif
