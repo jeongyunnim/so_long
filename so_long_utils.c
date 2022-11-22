@@ -6,11 +6,11 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:21:52 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/22 17:11:50 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/22 17:50:08 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "./so_long.h"
 
 int	deley_n(int n)
 {
@@ -76,4 +76,11 @@ void	make_enm(t_set *set)
 		i++;
 	}
 	free_string(&(set->check_map));
+}
+
+void	free_string(char **target)
+{
+	if (*target != NULL)
+		free(*target);
+	*target = NULL;
 }

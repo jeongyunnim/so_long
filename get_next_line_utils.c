@@ -6,11 +6,11 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 20:49:09 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/22 15:43:24 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/22 17:49:40 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "./so_long.h"
 
 void	*ft_calloc(size_t n, size_t size)
 {

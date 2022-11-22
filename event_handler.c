@@ -6,11 +6,11 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 13:13:41 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/22 17:23:51 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/22 17:49:35 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "./so_long.h"
 
 int	destroy_handler(t_set *set)
 {

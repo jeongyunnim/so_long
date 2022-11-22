@@ -6,11 +6,11 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 15:13:10 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/22 17:28:20 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/22 17:50:05 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "./so_long.h"
 
 int	check_line_len(t_set *set, int i)
 {
@@ -108,15 +108,3 @@ void	find_route(char *map, int current, int *collectable, int width)
 		find_route(map, current - 1, collectable, width);
 	}
 }
-
-//int	i;
-
-// i = 0;
-//printf("===============================\n");
-//while (map[i])
-//{
-//	printf("%c", map[i]);
-//	if (i % width == width - 1)
-//		printf("\n");
-//	i++;
-//}

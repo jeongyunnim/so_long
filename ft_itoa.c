@@ -6,11 +6,11 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 16:41:08 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/21 17:50:02 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/22 17:49:37 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "./so_long.h"
 
 static char	*positive(int n)
 {

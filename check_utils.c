@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   so_long.c                                          :+:      :+:    :+:   */
+/*   check_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 19:09:59 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/22 17:04:13 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/22 17:49:29 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "./so_long.h"
 
 int	check_map(int fd, t_set *set)
 {
@@ -66,4 +66,14 @@ int	check_extension(char *target)
 	target[i - 2] != 'e' || target[i - 1] != 'r')
 		return (ERROR);
 	return (0);
+}
+
+int	check_flag(char flag, char target)
+{
+	if ((flag & target) == 0)
+	{
+		return (-1);
+	}
+	else
+		return (0);
 }

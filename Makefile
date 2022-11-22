@@ -6,7 +6,7 @@
 #    By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/04 15:08:56 by jeseo             #+#    #+#              #
-#    Updated: 2022/11/22 16:45:31 by jeseo            ###   ########.fr        #
+#    Updated: 2022/11/22 17:48:11 by jeseo            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,15 +16,14 @@ MLX_FLAGS 	= 	-L./mlx -lmlx -framework OpenGL -framework Appkit
 NAME		=	./so_long
 INC			=	./so_long.h
 SRC			=	./main.c\
+				./get_next_line.c\
+				./get_next_line_utils.c\
+				./ft_itoa.c\
 				./draw_map.c\
 				./event_handler.c\
 				./so_long_utils.c\
-				./so_long.c \
-				./get_next_line.c\
-				./get_next_line_utils.c\
+				./check_utils.c \
 				./pars_map.c\
-				./split_function.c\
-				./ft_itoa.c\
 
 OBJ		=	$(SRC:%.c=%.o)
 RM		=	rm -f

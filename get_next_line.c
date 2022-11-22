@@ -6,11 +6,11 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 19:18:09 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/22 15:43:08 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/22 17:49:43 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "./so_long.h"
 
 static void	save_buff(char **save, char *buff, size_t i)
 {

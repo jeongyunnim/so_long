@@ -6,11 +6,11 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:13:37 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/22 17:15:22 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/22 17:49:32 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "./so_long.h"
 
 int	draw_map(t_set *set)
 {

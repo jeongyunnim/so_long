@@ -6,11 +6,11 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 13:51:04 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/22 17:06:30 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/22 17:49:59 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "./so_long.h"
 
 int	main(int argc, char **argv)
 {
