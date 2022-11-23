@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   so_long_bonus.h                                    :+:      :+:    :+:   */
+/*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 20:48:24 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/23 13:27:12 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/23 13:55:37 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SO_LONG_BONUS_H
-# define SO_LONG_BONUS_H
+#ifndef SO_LONG_H
+# define SO_LONG_H
 # include "./mlx/mlx.h"
 # include <fcntl.h>
 # include <unistd.h>
@@ -42,9 +42,8 @@
 
 typedef struct s_images
 {
-	void	*mot[5];
+	void	*mot;
 	void	*exit[2];
-	void	*enm[2];
 	void	*tile;
 	void	*wall;
 	void	*coll;
@@ -57,7 +56,6 @@ typedef struct s_settings
 	void		*win;
 	char		*map;
 	char		*check_map;
-	char		*move_count;
 	int			map_height;
 	int			line_len;
 	int			coll_cnt;
@@ -79,18 +77,18 @@ char		*ft_strdup(const char *str);
 size_t		ft_strlcpy(char *dest, const char *src, size_t dest_size);
 void		*ft_memset(void *bytes, int value, size_t len);
 char		*ft_strnjoin(char **s1, char const *s2, size_t len);
+size_t		ft_strlen(const char *str);
 
 char		*get_next_line(int fd);
 
 void		free_string(char **target);
-void		sprint_img(t_set *set, void *img[], int i);
 int			deley_n(int n);
 
 t_images	set_img(void *mlx_ptr);
 int			initialize_set(t_set *set, t_images *img);
 int			draw_map(t_set *set);
 void		draw_exit(t_set *set, int x, int y);
-void		make_enm(t_set *set);
+void		print_move_cnt(t_set *set, int move_cnt);
 
 int			check_valid(t_set *set);
 int			check_line(t_set *set);
@@ -98,16 +96,14 @@ int			check_components(t_set *flag);
 int			check_flag(char flag, char target);
 int			check_map(int fd, t_set *set);
 int			check_extension(char *target);
-
 void		find_route(char *map, int current, int *collectable, int width);
+void		movement(t_set *set, char current, int move, char who);
 
 void		pressed_wasd(int keycode, t_set *set);
 void		pressed_esc(void);
-int			key_handler(int key_code, t_set *set);
-int			destroy_handler(t_set *set);
-void		movement(t_set *set, char current, int move, char who);
-
-void		clear_game(t_set *set);
 void		print_error(t_set set);
+void		clear_game(t_set *set);
+int			destroy_handler(t_set *set);
+int			key_handler(int key_code, t_set *set);
 
 #endif

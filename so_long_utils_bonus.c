@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   so_long_utils.c                                    :+:      :+:    :+:   */
+/*   so_long_utils_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:21:52 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/22 17:50:08 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/23 14:05:46 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./so_long.h"
+#include "./so_long_bonus.h"
 
 int	deley_n(int n)
 {
@@ -23,7 +23,7 @@ int	deley_n(int n)
 void	print_error(t_set set)
 {
 	write(1, "ERROR\n", 6);
-	if (set.coll_cnt == 0)
+	if (set.coll_cnt != 0)
 		write(1, "ROUTE ERROR\n", 13);
 	if (set.coll_cnt == -1)
 		write(1, "COMPONENT ERROR\n", 16);
@@ -36,7 +36,7 @@ void	print_error(t_set set)
 	if (!(HERO_FLAG & set.flag))
 		write(1, "HAVE NO PLAYER\n", 15);
 	if (RECT_FLAG & set.flag)
-		write(1, "HAVE NO PLAYER\n", 15);
+		write(1, "MAP MUST BE RECTANGLE\n", 22);
 	write(1, "MAP CAN NOT BE DRAWN\n", 21);
 	exit(EXIT_FAILURE);
 }

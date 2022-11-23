@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   event_handler_bonus.c                              :+:      :+:    :+:   */
+/*   event_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 13:13:41 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/23 13:12:26 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/23 13:56:32 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./so_long_bonus.h"
+#include "./so_long.h"
 
 int	destroy_handler(t_set *set)
 {
@@ -35,8 +35,8 @@ int	key_handler(int key_code, t_set *set)
 void	pressed_wasd(int keycode, t_set *set)
 {
 	static int	move_cnt;
-	int			check;
 	int			move;
+	int			check;
 
 	move = 0;
 	check = set->p;
@@ -52,10 +52,7 @@ void	pressed_wasd(int keycode, t_set *set)
 	{
 		set->p += move;
 		movement(set, set->map[set->p], move, 'P');
-		free_string(&(set->move_count));
-		set->move_count = ft_itoa(++move_cnt);
-		if (set->move_count == NULL)
-			print_error(*set);
+		print_move_cnt(set, ++move_cnt);
 	}
 	if (check_flag(ENM_FLAG, set->flag) == 0)
 		movement(set, set->map[set->e + move], move, 'E');

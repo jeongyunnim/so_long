@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_utils_bonus.c                                :+:      :+:    :+:   */
+/*   check_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 19:09:59 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/23 13:19:45 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/23 14:12:44 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./so_long_bonus.h"
+#include "./so_long.h"
 
 int	check_map(int fd, t_set *set)
 {
@@ -47,6 +47,7 @@ int	check_valid(t_set *set)
 	if (set->check_map == NULL)
 		return (ERROR);
 	find_route(set->check_map, set->p, &set->coll_cnt, set->line_len);
+	free_string(&(set->check_map));
 	if (set->coll_cnt != 0)
 		return (ERROR);
 	set->coll_cnt = count_temp;
