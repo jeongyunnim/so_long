@@ -6,7 +6,7 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 20:48:24 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/23 13:55:37 by jeseo            ###   ########.fr       */
+/*   Updated: 2022/11/23 15:21:35 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,20 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <stdlib.h>
-# include <string.h>
 # include <stdio.h>
 
 # define BUFFER_SIZE	200
 # define ERROR			-1
 
-/*변화를 알 때 효율적*/
-# define WALL_FLAG	0x01 // 0000 0001
-# define HERO_FLAG	0x02 // 0000 0010
-# define COLL_FLAG	0x04 // 0000 0100
-# define EXIT_FLAG	0x08 // 0000 1000
-# define RECT_FLAG	0x10 // 0001 0000
-# define END_FLAG	0x20 // 0010 0000
-# define CLEAR_FLAG	0x40 // 0100 0000
-# define ENM_FLAG	0x80 // 1000 0000
+# define WALL_FLAG	0x01
+# define HERO_FLAG	0x02
+# define COLL_FLAG	0x04
+# define EXIT_FLAG	0x08
+# define RECT_FLAG	0x10
+# define END_FLAG	0x20
+# define CLEAR_FLAG	0x40
+# define ENM_FLAG	0x80
 
-/*key code*/
 # define W			13
 # define S			1
 # define A			0
@@ -97,9 +94,9 @@ int			check_flag(char flag, char target);
 int			check_map(int fd, t_set *set);
 int			check_extension(char *target);
 void		find_route(char *map, int current, int *collectable, int width);
-void		movement(t_set *set, char current, int move, char who);
 
 void		pressed_wasd(int keycode, t_set *set);
+void		movement(t_set *set, char current, int move, char who);
 void		pressed_esc(void);
 void		print_error(t_set set);
 void		clear_game(t_set *set);

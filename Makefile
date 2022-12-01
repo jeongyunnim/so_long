@@ -6,12 +6,12 @@
 #    By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/04 15:08:56 by jeseo             #+#    #+#              #
-#    Updated: 2022/11/23 13:17:56 by jeseo            ###   ########.fr        #
+#    Updated: 2022/11/23 15:33:45 by jeseo            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC			=	cc
-CFLAGS		=	-Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS		=	-Wall -Wextra -Werror
 MLX_FLAGS 	= 	-L./mlx -lmlx -framework OpenGL -framework Appkit
 
 NAME		=	./so_long
