@@ -6,7 +6,7 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 15:13:10 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/23 13:52:09 by jeseo            ###   ########.fr       */
+/*   Updated: 2023/01/12 19:39:11 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,11 +90,15 @@ int	check_components(t_set *set)
 void	find_route(char *map, int current, int *collectable, int width)
 {
 	static int	coll_flag;
+	int			i;
 
+	i = 0;
 	if (map[current] == 'C' || map[current] == 'E')
 		coll_flag++;
-	if (coll_flag == *collectable + 1)
+	if (coll_flag >= *collectable + 1)
 	{
+		if (coll_flag > *collectable)
+			printf("넘어갔음... static: %d, struct: %d\n", coll_flag, *collectable);
 		*collectable = 0;
 		return ;
 	}
@@ -106,5 +110,6 @@ void	find_route(char *map, int current, int *collectable, int width)
 		find_route(map, current + 1, collectable, width);
 		find_route(map, current - width, collectable, width);
 		find_route(map, current - 1, collectable, width);
+		map[current] = '0';
 	}
 }
