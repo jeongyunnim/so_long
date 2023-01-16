@@ -6,7 +6,7 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 13:51:04 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/23 13:41:08 by jeseo            ###   ########.fr       */
+/*   Updated: 2023/01/16 15:57:00 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,10 @@ int	main(int argc, char **argv)
 	ft_memset(&game, 0, sizeof(game));
 	if (check_map(fd, &game) == ERROR || initialize_set(&game, &img) == ERROR)
 		print_error(game);
-	mlx_key_hook(game.win, key_handler, &game);
 	mlx_loop_hook(game.mlx, draw_map, &game);
 	mlx_hook(game.win, DESTROY, 0, destroy_handler, &game);
+	mlx_hook(game.win, KEY_UP, 0,key_handler, &game);
+	// == mlx_key_hook(game.win, key_handler, &game);
 	mlx_loop(game.mlx);
 	return (0);
 }

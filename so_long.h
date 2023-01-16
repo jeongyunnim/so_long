@@ -6,7 +6,7 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 20:48:24 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/23 15:21:35 by jeseo            ###   ########.fr       */
+/*   Updated: 2023/01/16 15:32:22 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@
 # define A			0
 # define D			2
 # define ESC		53
+# define KEY_UP		3
+# define MOUSE_DOWN	4
 # define DESTROY	17
 
 typedef struct s_images

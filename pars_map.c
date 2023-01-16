@@ -6,7 +6,7 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 15:13:10 by jeseo             #+#    #+#             */
-/*   Updated: 2023/01/12 19:39:11 by jeseo            ###   ########.fr       */
+/*   Updated: 2023/01/16 15:36:54 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,6 @@ void	find_route(char *map, int current, int *collectable, int width)
 		coll_flag++;
 	if (coll_flag >= *collectable + 1)
 	{
-		if (coll_flag > *collectable)
-			printf("넘어갔음... static: %d, struct: %d\n", coll_flag, *collectable);
 		*collectable = 0;
 		return ;
 	}

@@ -6,7 +6,7 @@
 /*   By: jeseo <jeseo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 13:13:41 by jeseo             #+#    #+#             */
-/*   Updated: 2022/11/23 13:56:32 by jeseo            ###   ########.fr       */
+/*   Updated: 2023/01/16 15:57:11 by jeseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	destroy_handler(t_set *set)
 {
 	mlx_destroy_window(set->mlx, set->win);
+	//write(1, "창이 꺼졌습니다.\n", 24);
 	exit(EXIT_SUCCESS);
 	return (0);
 }
@@ -48,6 +49,8 @@ void	pressed_wasd(int keycode, t_set *set)
 		move = set->line_len;
 	else if (keycode == D)
 		move = 1;
+	else
+		return ;
 	if (set->map[check + move] != '1')
 	{
 		set->p += move;
